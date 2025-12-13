@@ -1,19 +1,16 @@
 import express from 'express'
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 import bodyParser from 'body-parser';
-import userRouter from './Routes/user.js';
-import contactRouter from './Routes/contact.js';
-import { config } from 'dotenv';
+import { config } from 'dotenv'
+import userRouter from './Route/user.js'
+import productRouter from './Route/product.js'
+import cartRouter from './Route/cart.js'
+
 
 const app = express();
 app.use(bodyParser.json());
 
 config({path: '.env'})
-
-// mongoose.connect(process.env.DB_NAME,{
-//     "dbName": "NodejsTutorial"
-// }).then(() => console.log("MondoDB Connected...")).catch((err)=> console.log(err))
-
 
 const startServer = async () => {
   try {
@@ -32,11 +29,12 @@ const startServer = async () => {
 
 startServer();
 
-//user Route
-app.use("/api/user", userRouter);
+app.get("/", (req,res) => {
+    return res.json({"message" : "home route working..."})
+})
 
-//contact Route
-app.use("/api/contact", contactRouter);
+app.use('/api/user', userRouter);
 
-// const port = process.env.PORT;
-// app.listen(port, ()=> console.log(`Successfully running on port ${port}`));
+app.use('/api/product', productRouter);
+
+app.use('/api/cart', cartRouter);
